@@ -10,7 +10,7 @@ In order to build PSlock you need the Xlib header files.
 
 Custom PSlock
 -------------
-Before the compilation, create an XPM image (with "convert" command...).
+Before the compilation, create an XPM image named : "myimage" (with "convert" command...).
 Paste the XPM content in PSlock.c :
 
 

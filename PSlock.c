@@ -1,7 +1,6 @@
-
 /* See LICENSE file for license details. */
 /* Based on slock-0.9: http://tools.suckless.org/slock */
-/* Modified to pupslock-0.1 by goingnuts.dk 160811 */
+/* Modified to PSlock by goingnuts.dk 160811 */
 #define _XOPEN_SOURCE 500
 #if HAVE_SHADOW_H
 #include <shadow.h>
@@ -23,13 +22,9 @@
 #include <X11/xpm.h> //to load xpm
 #include <X11/extensions/shape.h> //transparent background
 #include <time.h> //alternative to sleep
-//conf file
-#define RCFILE ".pupslockrc"
-
-// *noimage_xpm
 
 //START : XPM code
-static char *noimage_xpm[] = {};
+static char *myimage[] = {};
 
 //END : XPM code
 
@@ -55,7 +50,7 @@ get_password() { /* only run as root */
 	struct passwd *pw;
 
 	if(geteuid() != 0)
-		die("pupslock: cannot retrieve password entry (make sure to suid slock)\n");
+		die("PSlock: cannot retrieve password entry (make sure to suid slock)\n");
 	pw = getpwuid(getuid());
 	endpwent();
 	rval =  pw->pw_passwd;
@@ -71,7 +66,7 @@ get_password() { /* only run as root */
 
 	/* drop privileges */
 	if(setgid(pw->pw_gid) < 0 || setuid(pw->pw_uid) < 0)
-		die("pupslock: cannot drop privileges\n");
+		die("PSlock: cannot drop privileges\n");
 	return rval;
 }
 #endif
@@ -83,7 +78,7 @@ int s = 10; //, k = 0;
 char bc[BUFFER_SIZE - 1] = "black";
 char t[BUFFER_SIZE - 1] = "no";
 char a[BUFFER_SIZE - 1] = "no";
-char appname[BUFFER_SIZE - 1] = "pupslock";
+char appname[BUFFER_SIZE - 1] = "PSlock";
 Window y;
 Display *dpy;
 int pswd = 1;
@@ -251,7 +246,7 @@ main(int argc, char **argv) {
 #endif
 
 	if(!(dpy = XOpenDisplay(0)))
-		die("pupslock: cannot open display\n");
+		die("PSlock: cannot open display\n");
 	screen = DefaultScreen(dpy);
 	root = RootWindow(dpy, screen);
 	Xwidth=DisplayWidth(dpy, screen);
@@ -271,7 +266,7 @@ main(int argc, char **argv) {
 		XpmAttributes xpm_attr;
 		Pixmap pixmap, mask;
 		if ( ! XpmReadFileToPixmap (dpy, root, imagefile, &pixmap, &mask, &xpm_attr) == 0) {
-			XpmCreatePixmapFromData(dpy,root,noimage_xpm,&pixmap,&mask,&xpm_attr);
+			XpmCreatePixmapFromData(dpy,root,myimage,&pixmap,&mask,&xpm_attr);
 		}
 	
 		Swidth=(Xwidth-xpm_attr.width);
